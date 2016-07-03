@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html class="no-js"> 
+    {%block head%}
+    <head>
+        {%load staticfiles%}
+        <meta name="theme-color" content="#ffffff">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="{% static 'abr/js/jquery-1.11.1.min.js'%}"></script>
+        <script src="{% static 'abr/js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'abr/js/bootstrap.min.js' %}"></script>
+
+        <link rel="stylesheet" type="text/css" href="{% static 'abr/css/base.css'%}"\>
+        <link rel="stylesheet" type="text/css" href="{% static 'abr/css/bootstrap.css'%}"\>
+        <link rel="stylesheet" href="{% static 'abr/css/jquery-ui.min.css'%}" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <title>Data Driven Performance Management</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    {%endblock%}
+
+    <body>
+        {%block topnav%}
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+                <i class="fa fa-compass"></i>
+                <a class="navbar-brand" href="{% url 'specs.views.home' %}">Data Driven Performance Management</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{% url 'specs.views.home' %}">Home</a></li>
+              <li><a href="{% url 'reporting.views.home' %}">SPECS</a>
+              <li><a href="{% url 'abr.views.home' %}">ABR</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'django.contrib.auth.views.logout' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            {% endif %}
+            </ul>
+          </div>
+        </nav>
+        {%endblock%}
+
+        <div class="body">
+            {% block content %}{%endblock%}
+        </div>
+
+        <div>
+        </div>
+    </body>
+</html>

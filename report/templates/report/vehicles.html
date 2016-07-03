@@ -1,0 +1,65 @@
+{% extends "report/base.html" %}
+{%load staticfiles%}
+{%block thumbnail%}
+	<ol class="breadcrumb">
+		<li><a href="{% url 'report.views.index' %}">Home</a></li>
+		<li class = "active">CAVA</li>
+	</ol>
+{%endblock%}
+{% block content %}
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+<h2>Vehicle Make Model & Years</h2>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel-group" id="accordion">
+		    <div class="panel panel-default" clearfix>
+	     		{% for make, models in makes.items %} 
+		     	    <div class="panel-heading", style="background-color: #F0FFF0;">
+		     	    	<ledgend class="panel-title">
+			     	    	 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{make}}">
+			     	    	 {{make}}
+			     	    	 </a>
+		     	    	</ledgend>
+		        	</div>
+		        	<div id="collapse{{make}}" class="panel-collapse collapse">
+			        	<div class="panel-body">
+			        		{% for model,years in models.items %}
+			        			<div class="row"> 
+			        				<div class="col-md-3">
+			        					<a href="{% url 'VehicleList' %}">
+											{{model}}
+										</a>
+									</div>
+									<div class="col-md-9">
+				            			{% for year in years  %}
+				            				<a href="{% url 'VehicleList' %}">
+				            					{{year}}
+				            				</a>
+				            			{% endfor %}
+				            		</div>
+				            	</div>
+			            	{% endfor %}
+			            </div>
+			            <div class="panel-footer">
+			            	<a href="{% url 'VehicleList' %}">
+			            		{{make}} Record Details
+			            	</a>
+			            </div>
+			        </div>
+		        {% endfor %}
+		    </div>
+		</div>
+	</div>
+</div>
+{% endblock %}

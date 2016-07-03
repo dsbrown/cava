@@ -1,0 +1,116 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{% load abr_tags %}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+	<li class = "active">Survey Created</li>
+</ol>
+{%endblock%}
+
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+
+
+</style>
+
+<div id="midrail">
+    <h2>Survey Created</h2>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-default" clearfix>
+                <div class="panel-heading", style="background-color: #F0FFF0;">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <legend>Internal Email Template</legend>
+                        </div>  
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-10">
+                            <legend>From: </legend> {{internal_email_from_name|safe}}
+                            <legend>Reply To: </legend> {{internal_email_reply_to_email|safe}}
+                            <legend>Subject: </legend> {{internal_email_subject|safe}}
+                            <legend>Body: </legend> {{internal_email_body_contents|safe}}
+                            <P>
+                            <P>{{internal_email_footer_contents|safe}}</P>
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>  
+                </div>
+                 <div class="panel-heading", style="background-color: #F0FFF0;">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <legend>External Email Template</legend>
+                        </div>  
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-10">
+                            <legend>From: </legend> {{external_email_from_name|safe}}
+                            <legend>Reply To: </legend> {{external_email_reply_to_email|safe}}
+                            <legend>Subject: </legend> {{external_email_subject|safe}}
+                            <legend>Body: </legend> {{external_email_body_contents|safe}}
+                            <P>
+                            <P>{{external_email_footer_contents|safe}}</P>
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+
+    {% if virtual_qbr %}
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="panel panel-default" clearfix>
+                    <div class="panel-heading", style="background-color: #F0FFF0;">
+                        <legend>Download Questionnaire for Virtual QBR</legend>
+                    </div>
+                    <div class="panel-body">
+                        <div id=menu_item class="clickable_center_small">
+                            <a id=menu_item href="{% url 'abr_virt_question' pk %}">
+                                Download Questionnaire
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endif %}
+{%endblock%}

@@ -1,0 +1,30 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+	<li class = "active">SLA</li>
+</ol>
+{%endblock%}
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+
+<h2>Service Level Agreement Management</h2>
+</div>
+
+{{retcode}}
+
+
+{%endblock%}

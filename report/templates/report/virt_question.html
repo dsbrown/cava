@@ -1,0 +1,101 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{% load abr_tags %}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class = "active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+    <li class = "active"><a href="/abr/creating_survey/{{pk}}/">ABR Creating Survey</a></li>    
+	<li class = "active">Virtual Questionnaire</li>
+</ol>
+{%endblock%}
+
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+    <h2>Create Virtual Questionnaire</h2>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default" clearfix>
+                <div class="panel-heading", style="background-color: #F0FFF0;">
+                    <legend>Virtual Questionnaire Recipient</legend>
+                    {{ form.non_field_errors }}
+                </div>  
+                <div class="panel-body">
+                    <form class="form" role="form" action=/abr/virt_question/{{pk}}/  method="post" >
+                        {% csrf_token %}  
+                        <div class="form-group">
+                            <div class="fieldWrapper">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                         <label for="{{ form.recipient_first_name.id_for_label }}">{{ form.recipient_first_name.label }}&nbsp;&nbsp;</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        {{ form.recipient_first_name }}
+                                    </div>
+                                </div>
+                                 <div class="row">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-9">
+                                        {% if form.recipient_first_name.errors %}
+                                            <span class="field-error">
+                                                {% for error in  form.recipient_first_name.errors %}{{ error }}{% endfor %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fieldWrapper">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                         <label for="{{ form.recipient_last_name.id_for_label }}">{{ form.recipient_last_name.label }}&nbsp;&nbsp;</label> 
+                                    </div>
+                                    <div class="col-md-10">                   
+                                        {{ form.recipient_last_name }}
+                                        {% if form.recipient_last_name.errors %}
+                                            <span class="field-error">
+                                                {% for error in  form.recipient_last_name.errors %}{{ error }}{% endfor %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="fieldWrapper">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                         <label for="{{ form.recipient_email.id_for_label }}">{{ form.recipient_email.label }}&nbsp;&nbsp;</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        {{ form.recipient_email }}
+                                        {% if form.recipient_email.errors %}
+                                            <span class="field-error">
+                                                {% for error in  form.recipient_email.errors %}{{ error }}{% endfor %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Download" />                
+                    </form> 
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{%endblock%}

@@ -1,0 +1,40 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+
+<h2>Error</h2>
+</div>
+
+{% if last_error %}
+	<div class="alert alert-danger">
+	  <strong>Error!</strong> Qualtrics Returned:  {{last_error}}
+	</div>
+{% endif %}
+
+{% if error_str %}
+	<div class="alert alert-danger">
+		<strong>Error!</strong> The Website returned error: {{error_str}}
+	</div>
+{% endif %}
+
+<h1>Common Errors</h1>
+<ul>
+	<li>Here are some possible errors that you may encounter:</li>
+	<li>Your profile is incorrect. Your qualtrics id is your FULL email address at amazon, such as joeblow@amazon.com, Not joeblow.</li>	
+	<li>Your token is missing or incorrect.</li>
+	<li>The error text says, "Child returned-2" often is because your survey is not in the standard format. Remember your Qualtrics surveys must be in the standard prescribed format. In this case its probably missing a Role or Type.</li>
+</ul>
+{%endblock%}

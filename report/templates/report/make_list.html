@@ -1,0 +1,10 @@
+{% extends "report/base.html" %}
+
+{% block content %}
+    <h2>Vehicles</h2>
+    <ul>
+        {% for vehicle in vehicle_makes %}
+            <li><a id=make_name href="{% url 'ModelList' vehicle.niceName %}"> {{ vehicle.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

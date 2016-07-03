@@ -1,0 +1,12 @@
+
+https://fortawesome.github.io/Font-Awesome/icons/ 
+https://jquery.com/
+https://jqueryui.com
+https://github.com/elo80ka/django-dynamic-formset
+http://stickyjs.com/
+http://mikeking.io/succinct/
+http://getbootstrap.com/
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  {%load staticfiles%} - http://stackoverflow.com/questions/14013436/django-referencing-static-files-in-templates

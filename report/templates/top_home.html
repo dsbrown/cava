@@ -1,0 +1,30 @@
+{%extends "top_base.html" %}
+{%load staticfiles%}
+
+{%block content%}
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+</style>
+<div id="midrail">
+<h2>Infrastructure Performance Management</h2>
+</div>
+
+<div id=menu_item class="clickable_center_large">
+<a id=menu_item href="{% url 'reporting.views.home' %}">
+SPECS
+</a>
+</div>
+
+<div id=menu_item class="clickable_center_large">
+<a id=menu_item href="{% url 'abr.views.home' %}">
+Automated Reports
+</a>
+</div>
+
+{%endblock%}

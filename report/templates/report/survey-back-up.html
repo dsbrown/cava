@@ -1,0 +1,83 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{% load abr_tags %}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+	<li class = "active">Survey</li>
+</ol>
+{%endblock%}
+
+<!-- 
+survey name - automatically populates.  
+Name of the colo provider and to 
+Date of the Business Review 
+Folder prefill “Colo Providers”
+“Create Survey” 
+Header field, enter the colo provider name 
+date of the Business Review
+ AWS internal surveys rating colo providers, edit the answer choices for the question “Which Colocation do you support?” to list the site IDs (e.g., SFO 8) for all site options for that colo provider.
+7.  After making any necessary edits to the survey, click on the “Launch Survey” button with the globe icon.
+8.  Click on the “Activate your survey to collect responses” link.
+ -->
+
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+
+
+</style>
+
+<div id="midrail">
+    <h2>Survey Management</h2>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <div class="well"  clearfix>
+                <form class="form" role="form" action="/abr/survey/" method="post" >
+                    {% csrf_token %}
+                    <legend>Fliip</legend>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <div class="form-group">
+                                <label for="txt">{{ field.label }}</label> 
+                                    {{ field }}
+                                    <span class="field-error">
+                                        {% for error in  field.errors %}{{ error }}{% endfor %}
+                                    </span>
+                                    {% if field.help_text %}
+                                        <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                                    {% endif %}
+                            </div>
+                        {% else %}
+                             <div class="form-group">
+                                <label for="txt">
+                                    {{ field.label }} {{ field }} 
+                                    {% if field.help_text %}
+                                        <small>{{ field.help_text }}</small>
+                                    {% endif %}                         
+                                </label>                      
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <input type="submit" class="btn btn-primary" value="Submit" />                
+                </form> 
+            </div>
+        <div class="col-md-1">
+        </div>
+        </div>
+    </div>
+{% endif %}
+{%endblock%}

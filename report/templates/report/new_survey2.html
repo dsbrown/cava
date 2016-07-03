@@ -1,0 +1,133 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{% load abr_tags %}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.new_survey1' %}">Survey 1of3</a></li>
+	<li class = "active">Survey 2of3</li>
+</ol>
+{%endblock%}
+
+<!-- 
+survey name - automatically populates.  
+Name of the colo provider and to 
+Date of the Business Review 
+Folder prefill “Colo Providers”
+“Create Survey” 
+Header field, enter the colo provider name 
+date of the Business Review
+ AWS internal surveys rating colo providers, edit the answer choices for the question “Which Colocation do you support?” to list the site IDs (e.g., SFO 8) for all site options for that colo provider.
+7.  After making any necessary edits to the survey, click on the “Launch Survey” button with the globe icon.
+8.  Click on the “Activate your survey to collect responses” link.
+ -->
+
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+
+
+</style>
+
+<div id="midrail">
+    <h2>Create Survey</h2>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-default" clearfix>
+                <div class="panel-heading", style="background-color: #F0FFF0;">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <legend>Survey Name</legend>
+                            {{ form.non_field_errors }}
+                        </div>  
+                        <div class="col-md-2">
+                            <legend>2 of 3</legend>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form" role="form" action="/abr/new_survey2/" method="post" >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-8">
+                                <button type="button" class="btn btn-warning btn-lg">Please do not use the back button or hit refresh</button>
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                        </div>  
+                        <div class="row">
+                        <div class="col-md-12">
+                            <P></P>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="fieldWrapper">
+                                <label for="{{ form.internal_survey_name.id_for_label }}">{{ form.internal_survey_name.label }}</label>
+                                {{ form.internal_survey_name }}
+                                {% if form.internal_survey_name.help_text %}
+                                    <small>{{ form.internal_survey_name.help_text }}</small>
+                                {% endif %}   
+                                {% if form.internal_survey_name.errors %}
+                                    <span class="field-error">
+                                        {% for error in  form.internal_survey_name.errors %}{{ error }}{% endfor %}
+                                    </span>
+                                {% endif %}  
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="{{ form.external_survey_name.id_for_label }}">{{ form.external_survey_name.label }}</label>
+                                {{ form.external_survey_name }}
+                                {% if form.external_survey_name.help_text %}
+                                    <small>{{ form.external_survey_name.help_text }}</small>
+                                {% endif %}   
+                                {% if form.external_survey_name.errors %}
+                                    <span class="field-error">
+                                        {% for error in  form.external_survey_name.errors %}{{ error }}{% endfor %}
+                                    </span>
+                                {% endif %}  
+                            </div>
+
+                            <div class="fieldWrapper">
+                                <label for="{{ form.folder.id_for_label }}">{{ form.folder.label }}</label>
+                                {{ form.folder }}
+                                {% if form.folder.help_text %}
+                                    <small>{{ form.folder.help_text }}</small>
+                                {% endif %}   
+                                {% if form.folder.errors %}
+                                    <span class="field-error">
+                                        {% for error in form.folder.errors %}{{ error }}{% endfor %}
+                                    </span>
+                                {% endif %}  
+                            </div>
+                        </div>
+                        {{form.pmt_owner}}
+                        {{form.vendor_name}}
+                        {{form.scheduled_date}}
+                        {{form.response_date}}
+                        {{form.virtual_mtg}}
+                        {{form.period_start_date}}
+                        {{form.period_end_date}}
+                        <input type="submit" class="btn btn-primary" value="Next" />                
+                    </form> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+{% endif %}
+{%endblock%}

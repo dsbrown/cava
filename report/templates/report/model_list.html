@@ -1,0 +1,10 @@
+{% extends "report/base.html" %}
+
+{% block content %}
+    <h2>Vehicles</h2>
+    <ul>
+        {% for model in model_list %}
+            <li>{{ model.year }} {{ model.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "abr/base.html" %}
+{%load staticfiles%}
+
+{%block thumbnail%}
+<ol class="breadcrumb">
+    <li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+    <li class = "active">Survey</li>
+</ol>
+{%endblock%}
+
+{%block content%}
+    <style type="text/css">
+        .bolder{
+            font-weight: bold;
+        }
+        h2{
+            font-size: 28px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+    <title> Survey Management </title>
+    <div id="midrail">
+        <h2>Survey Management</h2>
+    </div>
+    <P>
+    <!--
+    <p>Full URL of this page: {{ request.get_full_path }}</p>
+    <p>URL of this page: {{ request.path }}</p>
+    <P>Inactive: {{show_inactive_flag}}</P>
+    -->
+    {% if not quser %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Your Qualtrics user name is blank. You probably need to create your profile in settings. 
+        </div>
+    {% elif last_error %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Qualtrics returned {{last_error}}. This is often because your login information is incorrect. Your Qualtrics user name is: {{quser}}. Be sure it has an @amazon.com this is often missed and make sure your token is correct. You can find update this information in settings.
+        </div>
+    {% else %}
+        <div class="row" >
+            <div class="col-sm-6">
+                <div id=menu_item class="clickable_center_small">
+                    <a id=menu_item href="{% url 'abr_new_survey1' %}">
+                        Create New Survey
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-2">
+            </div>
+            <form action="{{request.get_full_path}}" method="post">
+                {% csrf_token %}
+                <div class="col-sm-2">
+                    {% if superuser %}
+                        <table align="right">
+                            <tr><td>
+                                <label>Show All Users: </label>
+                                {{ survey_state_form.show_all_users }}
+                            </td></tr>
+                        </table>
+                    {% endif %}
+                </div>
+                <div class="col-sm-2">
+                    <table align="right">
+                        <tr><td>
+                            <label>Show Inactive:</label>
+                            {{ survey_state_form.show_inactive }}
+                        </td></tr>
+                    </table>
+                </div>
+            </form>
+        </div>
+
+        {% for username,quser,active,inactive in all_users_data %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading", style="background-color: #F0FFF0;"><B>Active Surveys for {{quser}}</B>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-hover table-condensed table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Survey Name</th>
+                                        <th>Deactivate</th>                                    
+                                        <th>Survey Results</th>
+                                        <th>Survey Status</th>
+                                        <th>PMT Owner</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for name,sid,radio_form in active %} 
+                                        <tr>
+                                            <td>￼{{ name }} </td>
+                                            <td>   
+                                                {% for field in radio_form %}
+                                                     <form class="form" role="form" action="{{request.path}}" method="post" >
+                                                        {% csrf_token %}
+                                                        <div class="fieldWrapper">
+                                                            <div class="radio-inline">
+                                                                 {{ field }}
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                {% endfor %}
+                                            </td>
+                                            <td> <a href="/abr/survey/download_survey/{{sid}}/{{name}}">Download Survey</a></td>
+                                            <td>Unknown<br>Unknown</td>
+                                            <td>{{ quser }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if show_inactive_flag %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading", style="background-color: #F0FFF0;"><B>Inactive Surveys for {{quser}}</B>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-striped table-hover table-condensed table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Survey Name</th>
+                                            <th>Deactivate</th>      
+                                            <th>Survey Results</th>
+                                            <th>Survey Status</th>
+                                            <th>PMT Owner</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for name,sid,radio_form in inactive %}
+                                        <tr>
+                                            <td>￼{{ name }} </td>
+                                            <td>   
+                                                {% for field in radio_form %}
+                                                     <form class="form" role="form" action="{{request.path}}" method="post" >
+                                                        {% csrf_token %}
+                                                        <div class="fieldWrapper">
+                                                            <div class="radio-inline">
+                                                                 {{ field }}
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                {% endfor %}
+                                            </td>
+                                            <td> <a href="/abr/survey/download_survey/{{sid}}/{{name}}">Download Survey</a></td>
+                                            <td>Unknown<br>Unknown</td>
+                                            <td>{{ quser }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{%endblock%}

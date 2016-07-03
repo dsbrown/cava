@@ -1,0 +1,183 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.settings' %}">Settings</a></li>
+	<li>Template</li>
+</ol>
+{%endblock%}
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+
+<h2>Template Management</h2>
+</div>
+
+{% if user.is_authenticated %}
+    {% if superuser %}
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                {% if error %}
+                <P>
+                    <button type="button" class="btn btn-warning btn-lg"> {{ error }} </button>
+                </P>
+                {% endif %}
+                <div class="panel-group">
+                    <div class="panel-heading", style="background-color: #F0FFF0;"><B>Templates For Automated Business Review</B>
+                    </div>
+                        <form action="/abr/template/" method="post", enctype="multipart/form-data">{% csrf_token %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading", style="background-color: #F0FFF0;"><B>Qualtrics QSF Forms</B>
+                                    {% if saved_internal %}
+                                    <P> 
+                                        <B>Save Status:</B>Internal Form Saved
+                                    </P>                                        
+                                    {% endif %}
+                                    {% if saved_external %}
+                                    <P>
+                                        <B>Save Status:</B>External Form Saved
+                                    </P>
+                                    {% endif %}
+                                </div>
+                                 <div class="panel-body">
+                                    <p>{{ internal_form.non_field_errors }}</p>
+                                    <p>{{ internal_form.internal_template.help_text }}</p>
+                                    <B>Current Internal Template: </B>{{internal_template}}
+                                     <p>
+                                        {{ internal_form.internal_template.errors }}
+                                        {{ internal_form.internal_template }}
+                                    </p>
+
+                                    <p>{{ external_form.non_field_errors }}</p>
+                                    <p>{{ external_form.external_template.help_text }}</p>
+                                    <B>Current External Template: </B>{{external_template}}                                    
+                                     <p>
+                                        {{ external_form.external_template.errors }}
+                                        {{ external_form.external_template }}
+                                    </p>
+                                </div>
+                                <div class="panel-heading", style="background-color: #F0FFF0;"><B>In Person QBR Email JSON Forms</B>
+                                    <P>
+                                        {% if saved_internal_email %}
+                                        <P>
+                                            <B>Save Status:</B>In Person QBR Internal Email Form Saved
+                                        </P>
+                                        {% endif %}
+                                        {% if saved_external_email %}
+                                        <P>
+                                            <B>Save Status:</B>In Person QBR External Email Form Saved
+                                        </P>
+                                        {% endif %}
+                                    </P>
+                                </div>
+                                <div class="panel-body">
+                                    <p>{{ internal_email_form.non_field_errors }}</p>
+                                    <p>{{ internal_email_form.internal_email.help_text }}</p>
+                                    <B>Current Internal Email Template: </B>{{internal_email}}
+                                    <p>
+                                        {{ internal_email_form.internal_email.errors }}
+                                        {{ internal_email_form.internal_email }}
+                                    </p>
+                                    <p>{{ external_email_form.non_field_errors }}</p>
+                                    <p>{{ external_email_form.external_email.help_text }}</p>
+                                    <B>Current External Email Template: </B>{{external_email}}                                    
+                                    <p>
+                                        {{ external_email_form.external_email.errors }}
+                                        {{ external_email_form.external_email }}
+                                    </p>
+                                </div>
+                                <div class="panel-heading", style="background-color: #F0FFF0;"><B>Virtual QBR Email JSON Forms</B>
+                                        {% if saved_internal_email_virutal %}
+                                        <P>
+                                             <B>Save Status:</B>Virtual QBR Internal Email Form Saved
+                                        </P>
+                                        {% endif %}
+                                        {% if saved_external_email_virutal %}
+                                        <P>
+                                            <B>Save Status:</B>Virtual QBR External Email Form Saved
+                                        </P>
+                                        {% endif %}
+                                </div>
+                                <div class="panel-body">
+                                    <p>{{ internal_email_virtual_form.non_field_errors }}</p>
+                                    <p>{{ internal_email_virtual_form.internal_email_virutal.help_text }}</p>
+                                    <B>Current Internal Email Template for Virtual QBR: </B>{{internal_email_virutal}}
+                                     <p>
+                                        {{ internal_email_virtual_form.internal_email_virutal.errors }}
+                                        {{ internal_email_virtual_form.internal_email_virutal }}
+                                    </p>
+                                    <p>{{ external_email_virtual_form.non_field_errors }}</p>
+                                    <p>{{ external_email_virtual_form.external_email_virutal.help_text }}</p>
+                                    <B>Current External Email Template for Virtual QBR: </B>{{external_email_virutal}}                                 
+                                     <p>
+                                        {{ external_email_virtual_form.external_email_virutal.errors }}
+                                        {{ external_email_virtual_form.external_email_virutal }}
+                                    </p>
+                                </div>
+                                 <div class="panel-heading", style="background-color: #F0FFF0;"><B>Colo Questionnaire Template for Virtual QBR</B>
+                                        {% if saved_questionnaire %}
+                                        <P>
+                                             <B>Save Status:</B>Virtual QBR Questionnaire Template Saved
+                                        </P>
+                                        {% endif %}
+                                </div>
+                                <div class="panel-body">
+                                    <p>{{ questionnaire_form.non_field_errors }}</p>
+                                    <p>{{ questionnaire_form.questionnaire.help_text }}</p>
+                                    <B>Colo Questionnaire Template for Virtual QBR: </B>{{questionnaire}}
+                                     <p>
+                                        {{ questionnaire_form.questionnaire.errors }}
+                                        {{ questionnaire_form.questionnaire }}
+                                    </p>
+                                </div>
+                                <div class="panel-heading">
+                                </div>
+                                <div class="panel-body">
+                                    <input  type="submit" value="Upload" name="Upload" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <p>You must be a superuser to upload a template.</p>
+            </div>
+             <div class="col-md-1">
+            </div>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <p>You must be a logged in to use this site.</p>
+        </div>
+         <div class="col-md-1">
+        </div>
+    </div>
+{% endif %}
+
+{%endblock%}

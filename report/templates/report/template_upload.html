@@ -1,0 +1,27 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.settings' %}">Settings</a></li>
+    <li class = "active">Upload Templates</li>
+</ol>
+{%endblock%}
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+<h2>Upload Templates</h2>
+</div>
+
+{%endblock%}

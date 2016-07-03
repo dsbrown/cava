@@ -1,0 +1,146 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+
+{%block thumbnail%}
+<ol class="breadcrumb">
+    <li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+    <li class = "active">Settings</li>
+</ol>
+{%endblock%}
+
+{%block content%}
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+    h3{
+            font-size: 18px;
+            text-align: center;
+    }
+</style>
+
+<div id="midrail">
+    <h2>Settings</h2>
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-11">
+        {% if user.is_authenticated %}
+            {% if status == 'saved' %}
+                <div class="alert alert-success">
+                    <strong>Saved</strong> Your settings have been saved. 
+                </div>
+            {% elif status == 'warning' %}
+                <div class="alert alert-warning">
+                    <strong>Warning!</strong> Your settings were not saved, please check your entries and try again. 
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-11">
+            {% if superuser %}
+                <div class="alert alert-warning"  clearfix>
+                    Welcome, <B>{{ user.get_username }} </B> 
+                    <P>You are a <strong>superuser</strong> this allows you to see other members surveys, upload templates and perform administrative tasks.</P>
+                    <P>You may upload Qualtrics Templates to this ABR server with the button below, they will overwrite the existing templates and be available to everyone for use immediatly upon completion:</P> 
+                     <div class="row">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-3">
+                            <div id=menu_item class="clickable_center_small" >
+                                <a  id=menu_item href="{% url 'abr.views.template' %}">
+                                Load Templates To ABR
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                         <div class="col-md-1">
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info" clearfix>
+                    Welcome, <B>{{ user.get_username }} </B> 
+                    You are not a superuser
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-11">
+            <div class="well">
+                <P><B>Your Qualtrics Settings</B></p>
+                <form class="form" role="form" action="/abr/settings/" method="post">
+            	    {% csrf_token %}
+                     <fieldset>
+                        <legend>{{ title }}</legend>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <div class="form-group">
+                                    <label for="txt">{{ field.label }}</label> 
+                                        {{ field }}
+                                        <span class="field-error">
+                                            {% for error in  field.errors %}{{ error }}{% endfor %}
+                                        </span>
+                                        {% if field.help_text %}
+                                            <p class="help-inline"><small>{{ field.help_text }}</small></p>
+                                        {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="form-group">
+                                    <label for="txt">{{ field.label }}</label> 
+                                        {{ field }}
+                                        {% if field.help_text %}
+                                            <small>{{ field.help_text }}</small>
+                                        {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </fieldset>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" >Submit</button>
+                    </div>
+            	</form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-11">
+            <div class="well">
+            </div>
+        </div>        
+    </div>
+{% else %}
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <p>You must be logged in to use this site.</p>
+        </div>
+         <div class="col-md-1">
+        </div>
+    </div>
+{% endif %}
+
+{%endblock%}

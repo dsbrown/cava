@@ -1,0 +1,230 @@
+{%extends "abr/base.html" %}
+{%load staticfiles%}
+{% load abr_tags %}
+{%block thumbnail%}
+<ol class="breadcrumb">
+	<li><a href="{% url 'specs.views.home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'abr.views.home' %}">ABR Home</a></li>
+	<li class = "active">Survey 1of3</li>
+</ol>
+{%endblock%}
+
+<!-- 
+survey name - automatically populates.  
+Name of the colo provider and to 
+Date of the Business Review 
+Folder prefill “Colo Providers”
+“Create Survey” 
+Header field, enter the colo provider name 
+date of the Business Review
+ AWS internal surveys rating colo providers, edit the answer choices for the question “Which Colocation do you support?” to list the site IDs (e.g., SFO 8) for all site options for that colo provider.
+7.  After making any necessary edits to the survey, click on the “Launch Survey” button with the globe icon.
+8.  Click on the “Activate your survey to collect responses” link.
+ -->
+
+{%block content%}
+
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 40px;
+        text-align: center;
+    }
+</style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<script>
+    $(function() {
+        $("#lookup").autocomplete({
+        source: "/abr/api/lookup/",
+        minLength: 1,
+        });
+    });
+</script>
+
+
+
+
+<div id="midrail">
+    <h2>Create Survey</h2>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default" clearfix>
+                <div class="panel-heading", style="background-color: #F0FFF0;">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <legend>Colocation Vendor Name and Scheduled Date of the Review</legend>
+                            {{ form.non_field_errors }}
+                        </div>  
+                        <div class="col-md-2">
+                            <legend>1 of 3</legend>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form" role="form" action="/abr/new_survey1/" method="post" >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.virtual_mtg.id_for_label }}">{{ form.virtual_mtg.label }}&nbsp;&nbsp;</label>
+                                        <div class="radio-inline">
+                                            {{ form.virtual_mtg }}
+                                        </div>
+                                        {% if form.virtual_mtg.help_text %}
+                                        <P>
+                                            &nbsp;&nbsp;<small>{{ form.virtual_mtg.help_text }}</small>
+                                        </P>
+                                        {% endif %}   
+                                        {% if form.virtual_mtg.errors %}
+                                            <span class="field-error">
+                                                {% for error in  form.virtual_mtg.errors %}{{ error }}{% endfor %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.pmt_owner.id_for_label }}">{{ form.pmt_owner.label }}</label>
+                                        {{ form.pmt_owner }}
+                                        {% if form.pmt_owner.help_text %}
+                                        <P>
+                                            &nbsp;&nbsp;<small>{{ form.pmt_owner.help_text }}</small>
+                                        </P>
+                                        {% endif %}   
+                                        {% if form.pmt_owner.errors %}
+                                            <span class="field-error">
+                                                {% for error in  form.pmt_owner.errors %}{{ error }}{% endfor %}
+                                            </span>
+                                        {% endif %}  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="fieldWrapper">
+                                    <label for="{{ form.vendor_name.id_for_label }}">{{ form.vendor_name.label }}</label>
+                                    {{ form.vendor_name }}
+                                    {% if form.vendor_name.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.vendor_name.help_text }}</small>
+                                    </P>
+                                    {% endif %}   
+                                    {% if form.vendor_name.errors %}
+                                        <span class="field-error">
+                                            {% for error in  form.vendor_name.errors %}{{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}  
+                                    {% if form.vendor_name.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.vendor_name.help_text }}</small>
+                                    </P>
+                                    {% endif %}   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="fieldWrapper">
+                                    <label for="{{ form.scheduled_date.id_for_label }}">{{ form.scheduled_date.label }}</label>
+                                    {{ form.scheduled_date }}
+                                    {% if form.scheduled_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.scheduled_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}  
+                                    {% if form.scheduled_date.errors %}
+                                        <span class="field-error">
+                                            {% for error in  form.scheduled_date.errors %}{{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %} 
+                                    {% if form.scheduled_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.scheduled_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}               
+                                </div>
+                            </div>
+                             <div class="col-md-7">
+                                 <div class="fieldWrapper">
+                                    <label for="{{ form.response_date.id_for_label }}">{{ form.response_date.label }}</label>
+                                    {{ form.response_date }}
+                                    {% if form.response_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.response_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}  
+                                    {% if form.response_date.errors %}
+                                        <span class="field-error">
+                                            {% for error in  form.response_date.errors %}{{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %} 
+                                    {% if form.response_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.response_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}               
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="fieldWrapper">
+                                    <label for="{{ form.period_start_date.id_for_label }}">{{ form.period_start_date.label }}</label>
+                                    {{ form.period_start_date }}
+                                    {% if form.period_start_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.period_start_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}  
+                                    {% if form.period_start_date.errors %}
+                                        <span class="field-error">
+                                            {% for error in  form.period_start_date.errors %}{{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %} 
+                                    {% if form.period_start_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.period_start_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}               
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="fieldWrapper">
+                                    <label for="{{ form.period_end_date.id_for_label }}">{{ form.period_end_date.label }}</label>
+                                    {{ form.period_end_date }}
+                                    {% if form.period_end_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.period_end_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}  
+                                    {% if form.period_end_date.errors %}
+                                        <span class="field-error">
+                                            {% for error in  form.period_end_date.errors %}{{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %} 
+                                    {% if form.period_end_date.help_text %}
+                                    <P>
+                                        &nbsp;&nbsp;<small>{{ form.period_end_date.help_text }}</small>
+                                    </P>
+                                    {% endif %}               
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Next" />                
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{%endblock%}
