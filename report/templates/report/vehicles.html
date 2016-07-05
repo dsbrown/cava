@@ -26,24 +26,37 @@
 		    <div class="panel panel-default" clearfix>
 	     		{% for make, models in makes.items %} 
 		     	    <div class="panel-heading", style="background-color: #F0FFF0;">
-		     	    	<ledgend class="panel-title">
-			     	    	 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{make}}">
-			     	    	 {{make}}
-			     	    	 </a>
-		     	    	</ledgend>
+			     	    <div class="row">
+			     	    	<div class="col-md-3 col-sm-6 col-xs-11 ">
+				     	    	<ledgend class="panel-title">
+					     	    	 <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{make}}">
+					     	    	 	{{make}}
+					     	    	 </a>
+				     	    	</ledgend>
+				     	    </div>
+			     	    	<div class="col-md-8 col-sm-5 col-xs-1 ">
+							</div>
+							<div class="col-md-1 col-sm-1 col-xs-1 ">
+	        					<a href="{% url 'make-update' make  %}">
+	        						<h1 class="panel-title">
+										+
+									</h1>
+								</a>
+							</div>
+			        	</div>
 		        	</div>
 		        	<div id="collapse{{make}}" class="panel-collapse collapse">
 			        	<div class="panel-body">
 			        		{% for model,years in models.items %}
 			        			<div class="row"> 
 			        				<div class="col-md-3">
-			        					<a href="{% url 'VehicleList' %}">
+			        					<h4>
 											{{model}}
-										</a>
+										</h4>
 									</div>
 									<div class="col-md-9">
 				            			{% for year in years  %}
-				            				<a href="{% url 'VehicleList' %}">
+				            				<a href="{% url 'model-update' make model year %}">
 				            					{{year}}
 				            				</a>
 				            			{% endfor %}
@@ -52,7 +65,7 @@
 			            	{% endfor %}
 			            </div>
 			            <div class="panel-footer">
-			            	<a href="{% url 'VehicleList' %}">
+			            	<a href="{% url 'make-update' make  %}">
 			            		{{make}} Record Details
 			            	</a>
 			            </div>

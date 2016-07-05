@@ -8,6 +8,13 @@ class Make(models.Model):
     niceName    = models.CharField(max_length=128)
     edmunds_id  = models.IntegerField(default=0, blank=True)
 
+    def get_absolute_url(self):
+        return reverse('make-detail', kwargs={'pk': self.pk})
+
+    def __unicode__(self):
+        return u'%s' % (self.name)
+
+
 class MakeAlias(models.Model):
     alias       = models.CharField(max_length=128)
     make        = models.ForeignKey('Make')
@@ -24,6 +31,9 @@ class Model(models.Model):
     avg_condition          = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True)
     avg_location_latitude  = models.DecimalField(max_digits=10, decimal_places=6, default=0, blank=True)
     avg_location_longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, blank=True)
+
+    def __unicode__(self):
+        return u'%s %s' % (self.year,self.name)
 
 class Trim(models.Model):
     niceName    = models.CharField(max_length=128,default="", blank=True)     # this may not be necessary

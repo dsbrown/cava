@@ -1,0 +1,30 @@
+{% extends "report/base.html" %}
+{%load staticfiles%}
+{%block thumbnail%}
+	<ol class="breadcrumb">
+		<li><a href="{% url 'report.views.index' %}">Home</a></li>
+		<li class = "active">CAVA</li>
+	</ol>
+{%endblock%}
+{%block content%}
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+<h2>Craigslist Automobile Value Analysis</h2>
+<h2>Edit Model Record</h2>
+</div>
+
+<div class="row">
+	
+{{form}}
+
+</div>
+{%endblock%}
