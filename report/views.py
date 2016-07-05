@@ -88,13 +88,7 @@ class ModelDelete(DeleteView):
         print "Make: /%s/, Model: /%s/, Year: /%s/"%(self.kwargs['make'], self.kwargs['model'], self.kwargs['year'])
         self.make_record  = get_object_or_404(Make,  name__iexact=self.kwargs['make'])
         print "Make Record: %s"%self.make_record
-        print "Make Record, Nice Name: %s"%self.make_record.niceName
-        print self.test_model_record
-        #self.model_record = get_object_or_404(Model, name__iexact=self.kwargs['model'], year__iexact=self.kwargs['year'], make=self.make_record)
         self.model_record = get_object_or_404(Model, niceName__iexact=self.kwargs['model'], year=self.kwargs['year'], make=self.make_record)
-        print self.model_record.make.name
-        print self.model_record.name        
-        print self.model_record.year        
         return get_object_or_404(Model, pk=self.model_record.pk)
 
     success_url = reverse_lazy('vehicles')
