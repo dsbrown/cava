@@ -67,7 +67,25 @@ class MakeDelete(DeleteView):
 
 class ModelCreate(CreateView):
     model = Model
+    template_name = 'report/model_add.html'
     fields = ['name','niceName','edmunds_year_id', 'make', 'year', 'edmunds_year_id' ]
+
+    success_url = reverse_lazy('vehicles')
+
+class ModelCreateMake(CreateView):
+    model = Model
+    template_name = 'report/model_add.html'
+    fields = ['name','niceName','edmunds_year_id', 'make', 'year', 'edmunds_year_id' ]
+
+    def get_initial(self):
+        print self.kwargs['make']
+        self.make_record = get_object_or_404(Make, name__iexact=self.kwargs['make'])
+        # Get the initial dictionary from the superclass method
+        initial = super(ModelCreateMake, self).get_initial()
+        # Copy the dictionary so we don't accidentally change a mutable dict
+        initial = initial.copy()
+        initial['make'] = self.make_record
+        return initial
 
 class ModelUpdate(UpdateView):
     model = Model
@@ -81,15 +99,10 @@ class ModelUpdate(UpdateView):
 
 class ModelDelete(DeleteView):
     model = Model
-
-     fields = ['name','niceName','edmunds_year_id', 'make', 'year', 'edmunds_year_id' ]
+    fields = ['name','niceName','edmunds_year_id', 'make', 'year', 'edmunds_year_id' ]
 
     def get_object(self):
-        print "Make: /%s/, Model: /%s/, Year: /%s/"%(self.kwargs['make'], self.kwargs['model'], self.kwargs['year'])
-        self.make_record  = get_object_or_404(Make,  name__iexact=self.kwargs['make'])
-        print "Make Record: %s"%self.make_record
-        self.model_record = get_object_or_404(Model, niceName__iexact=self.kwargs['model'], year=self.kwargs['year'], make=self.make_record)
-        return get_object_or_404(Model, pk=self.model_record.pk)
+        return get_object_or_404(Model, pk=self.kwargs['pk'])
 
     success_url = reverse_lazy('vehicles')
 

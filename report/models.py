@@ -2,18 +2,43 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+
+# Bibliography:
+#    SOURCE_EDMUNDS    
+#
+#    SOURCE_GITHUB     https://github.com/n8barr/automotive-model-year-data/blob/master/data.sql
+#    SOURCE_DOE        http://www.fueleconomy.gov/feg/ws/index.shtml
+#    SOURCE_SAE        Not subscribed
+
+
+SOURCE_EDMUNDS    = 'EDM'
+SOURCE_GITHUB     = 'GHB'
+SOURCE_DOE        = 'DOE'
+SOURCE_SAE        = 'SAE'
+SOURCE_CL         = 'CLE'
+
+SOURCE = (
+    (SOURCE_EDMUNDS,  'Edmunds API'),
+    (SOURCE_GITHUB,   'Git Hub Database'),
+    (SOURCE_DOE,      'DOE Database'),
+    (SOURCE_SAE,      'SAE Database'),
+    (SOURCE_CL,       'Craigslist Entry'),
+)
+
+
 # Create your models here.
 class Make(models.Model):
-    name        = models.CharField(max_length=128)
-    niceName    = models.CharField(max_length=128)
-    edmunds_id  = models.IntegerField(default=0, blank=True)
+    name             = models.CharField(max_length=128)
+    niceName         = models.CharField(max_length=128)
+    edmunds_id       = models.IntegerField(default=0, blank=True)
+    source           = models.CharField(max_length=3,choices=SOURCE, default="", blank=True)
+    craigslist_count = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse('make-detail', kwargs={'pk': self.pk})
 
     def __unicode__(self):
         return u'%s' % (self.name)
-
 
 class MakeAlias(models.Model):
     alias       = models.CharField(max_length=128)
@@ -24,9 +49,12 @@ class Model(models.Model):
     niceName    = models.CharField(max_length=128)
     make        = models.ForeignKey('Make')
     year        = models.IntegerField()                                                         # CL years 2017 - 1900
+    vclass      = models.CharField(max_length=128,default="", blank=True)
     related     = models.ManyToManyField('Model', blank=True)
     edmunds_id  = models.CharField(max_length=128, default="", blank=True)
     edmunds_year_id        = models.IntegerField(default=0, blank=True)
+    source                 = models.CharField(max_length=3,choices=SOURCE, default="", blank=True)
+    craigslist_count       = models.IntegerField(default=0)
     avg_price              = models.DecimalField(max_digits=11, decimal_places=2, default=0, blank=True) 
     avg_condition          = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True)
     avg_location_latitude  = models.DecimalField(max_digits=10, decimal_places=6, default=0, blank=True)
@@ -39,10 +67,26 @@ class Trim(models.Model):
     niceName    = models.CharField(max_length=128,default="", blank=True)     # this may not be necessary
     trim        = models.CharField(max_length=128,default="", blank=True)    
     model       = models.ForeignKey('Model',default=None, null=True)
+    source      = models.CharField(max_length=3,choices=SOURCE, default="", blank=True)
+    craigslist_count = models.IntegerField(default=0)
+    body_style  = models.CharField(max_length=128,default="", blank=True)   
+    engine      = models.CharField(max_length=32,choices=SOURCE, default="", blank=True)
+    displacement= models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True)
+    transmission= models.CharField(max_length=32,choices=SOURCE, default="", blank=True)
+    cylinders   = models.IntegerField(default=0)
+    drive_type  = models.CharField(max_length=32,choices=SOURCE, default="", blank=True)
+    vclass      = models.CharField(max_length=64,choices=SOURCE, default="", blank=True)
+    avg_price              = models.DecimalField(max_digits=11, decimal_places=2, default=0, blank=True) 
+    avg_condition          = models.DecimalField(max_digits=5, decimal_places=2, default=0, blank=True)
+    avg_location_latitude  = models.DecimalField(max_digits=10, decimal_places=6, default=0, blank=True)
+    avg_location_longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, blank=True)
+
 
 class ModelAlias(models.Model):
     niceName    = models.CharField(max_length=128,default="", blank=True)     
     alias       = models.CharField(max_length=128,default="", blank=True)
+    source      = models.CharField(max_length=3,choices=SOURCE, default="", blank=True)
+    craigslist_count       = models.IntegerField(default=0)
 
 class ClPost(models.Model):
     TITLE_CLEAN       = 'CL'
@@ -224,8 +268,10 @@ class ClPost(models.Model):
     last_seen       = models.DateField()                                                          # last_seen     i.e 2016-07-17 10:30
     active          = models.BooleanField(default=True)
     have_counted    = models.BooleanField(default=True)    
+    craigslist_count= models.IntegerField(default=0)    
     make            = models.ForeignKey('Make', blank=True, null=True)
     models          = models.ForeignKey('Model', blank=True, null=True)
+
 
 class VehicleImages(models.Model):
     image_url   = models.URLField(max_length=2048, blank=True, null=True)                         # http://images.craigslist.org/00404_4ELUsqg7uIG_600x450.jpg

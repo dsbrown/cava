@@ -1,0 +1,36 @@
+{% extends "report/base.html" %}
+{%load staticfiles%}
+{%block thumbnail%}
+	<ol class="breadcrumb">
+		<li><a href="{% url 'report.views.index' %}">Home</a></li>
+		<li class = "active">CAVA</li>
+	</ol>
+{%endblock%}
+{%block content%}
+<style type="text/css">
+    .bolder{
+        font-weight: bold;
+    }
+    h2{
+        font-size: 28px;
+        text-align: center;
+    }
+</style>
+
+<div id="midrail">
+<h2>Craigslist Automobile Value Analysis</h2>
+<h2>Delete Model Record</h2>
+</div>
+
+<div class="row">
+	<div class="col-md-=1 col-sm-1 col-xs-0">
+	</div>
+	<div class="col-md-8 col-sm-8 col-xs-8 ">
+		<form action="" method="post">{% csrf_token %}
+    		<p>Are you sure you want to delete "{{ object }}"?</p>
+    		<p>This will delete the record and all associated statistics such as average price, condition and location</p>
+    		<input type="submit" value="Confirm Deletion" />
+		</form>
+	</div>
+</div>
+{%endblock%}

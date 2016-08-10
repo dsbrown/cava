@@ -1,5 +1,5 @@
 from django.conf.urls import url,include
-from report.views import VehicleList, ModelList, index, vehicles, market, settings, MakeCreate, MakeUpdate, MakeDelete, ModelCreate, ModelUpdate, ModelDelete
+from report.views import VehicleList, ModelList, index, vehicles, market, settings, MakeCreate, MakeUpdate, MakeDelete, ModelCreate, ModelUpdate, ModelDelete, ModelCreateMake
 from . import views
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'make/(?P<make>.+?)/$', MakeUpdate.as_view(), name='make-update'),
     url(r'make/(?P<make>.+?)/delete/$', MakeDelete.as_view(), name='make-delete'),
     url(r'model/add/$', ModelCreate.as_view(), name='model-add'),
+    url(r'model/add/(?P<make>.+?)/$', ModelCreateMake.as_view(), name='model-add-make'),    
     url(r'model/(?P<make>.+?)/(?P<model>.+?)/(?P<year>.+?)/$', ModelUpdate.as_view(), name='model-update'),
-    url(r'model/(?P<make>.+?)/(?P<model>.+?)/(?P<year>.+?)/delete/$', ModelDelete.as_view(), name='model-delete'),
+    url(r'model/(?P<pk>[0-9]+)/delete/$', ModelDelete.as_view(), name='model-delete'),
 ]

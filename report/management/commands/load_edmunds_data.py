@@ -80,11 +80,8 @@ def query_yes_no(question, default="no"):
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
 
-
-
 class Command(BaseCommand):
     debug_level = 1
-
 
     help = 'Loads the Edmunds Vehicle Database'
     def add_arguments(self, parser):
